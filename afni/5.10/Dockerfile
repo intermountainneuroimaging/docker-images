@@ -43,8 +43,10 @@ RUN export ND_ENTRYPOINT="/neurodocker/startup.sh" \
 
 ENTRYPOINT ["/neurodocker/startup.sh"]
 
-ENV PATH="/opt/afni-latest:$PATH" \
-    AFNI_PLUGINPATH="/opt/afni-latest"
+ENV PATH="/usr/abin:/root/abin:$PATH" \
+    AFNI_PLUGINPATH="/usr/abin"
+
+RUN apt-get update -qq     
 
 RUN apt-get install -y -q --no-install-recommends software-properties-common  \
     && apt-get update -qq      \ 
@@ -65,10 +67,8 @@ RUN apt-get install -y -y -q --no-install-recommends \
 
 RUN cd  /usr/ \
     && curl -O https://afni.nimh.nih.gov/pub/dist/bin/misc/@update.afni.binaries    \
-    && tcsh @update.afni.binaries -package linux_ubuntu_16_64 -do_extras            \
+    && tcsh @update.afni.binaries -package linux_ubuntu_16_64 -do_extras            
 
-ENV PATH="/usr/abin:$PATH" \
-    AFNI_PLUGINPATH="/usr/abin"
 
 RUN export R_LIBS=/usr/R         \ 
    && mkdir  $R_LIBS              \
